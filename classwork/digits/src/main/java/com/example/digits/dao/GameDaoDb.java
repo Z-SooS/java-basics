@@ -1,5 +1,6 @@
 package com.example.digits.dao;
 
+import com.example.digits.dto.UnfinishedGame;
 import com.example.digits.model.Game;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -64,7 +65,8 @@ public class GameDaoDb implements GameDao{
 
         @Override
         public Game mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Game game = new Game();
+            boolean isFinished = rs.getBoolean("finished");
+            Game game = isFinished ? new Game() : new UnfinishedGame();
             game.setId(rs.getInt("id"));
             game.setDigits(rs.getString("digits").toCharArray());
             game.setFinished(rs.getBoolean("finished"));
