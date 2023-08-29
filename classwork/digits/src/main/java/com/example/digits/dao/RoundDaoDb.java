@@ -36,8 +36,8 @@ public class RoundDaoDb implements RoundDao{
     @Override
     @Transactional
     public Round addRound(Round addedRound) {
-        final String INSERT_ROUND = "INSERT INTO round(game_id, guess) VALUES(?,?)";
-        jdbc.update(INSERT_ROUND, addedRound.getGame_id(), addedRound.getGuess());
+        final String INSERT_ROUND = "INSERT INTO round(game_id, guess, correct, partial) VALUES(?,?,?,?)";
+        jdbc.update(INSERT_ROUND, addedRound.getGameId(), new String(addedRound.getGuess()), addedRound.getCorrect(),  addedRound.getPartial());
 
         final String GET_ID = "SELECT currval('round_id_seq')";
         //noinspection DataFlowIssue
@@ -52,7 +52,7 @@ public class RoundDaoDb implements RoundDao{
             Round get = new Round();
             get.setId(rs.getInt("id"));
             get.setGuess(rs.getString("guess").toCharArray());
-            get.setGame_id(rs.getInt("game_id"));
+            get.setGameId(rs.getInt("game_id"));
             return get;
         }
     }
