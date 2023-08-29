@@ -10,19 +10,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @AllArgsConstructor
 public class GameController {
     private DigitService service;
 
     @PostMapping("begin")
-    public ResponseEntity<Integer> begin() {
-        int gameId = service.createNewGame();
-        return ResponseEntity.status(HttpStatus.CREATED).body(gameId);
+    public CompletableFuture<ResponseEntity<Integer>> begin() {
+        service.createNewGame();
+        return service.createNewGame().thenApply(id -> ResponseEntity.status(HttpStatus.CREATED).body(id));
     }
 
     @PostMapping("guess")
-    public Round makeGuess(@RequestBody IncomingGuess incomingGuess) {
+    public CompletableFuture<Round> makeGuess(@RequestBody IncomingGuess incomingGuess) {
         return service.makeGuess(incomingGuess.getGameId(), incomingGuess.getGuess());
     }
 }
