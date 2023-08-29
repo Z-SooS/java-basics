@@ -1,15 +1,18 @@
 package com.example.digits.controller;
 
 import com.example.digits.dto.IncomingGuess;
+import com.example.digits.model.Game;
 import com.example.digits.model.Round;
 import com.example.digits.service.DigitService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -26,5 +29,9 @@ public class GameController {
     @PostMapping("guess")
     public CompletableFuture<Round> makeGuess(@RequestBody IncomingGuess incomingGuess) {
         return service.makeGuess(incomingGuess.getGameId(), incomingGuess.getGuess());
+    }
+    @GetMapping("game")
+    public CompletableFuture<List<Game>> games() {
+        return service.getAllGames();
     }
 }

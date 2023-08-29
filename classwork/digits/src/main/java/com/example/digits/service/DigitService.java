@@ -61,6 +61,17 @@ public class DigitService {
             return createdRound;
         });
     }
+    @Async
+    public CompletableFuture<List<Game>> getAllGames() {
+        return CompletableFuture.supplyAsync(()-> {
+            List<Game> games = gameDao.getAllGames();
+            games.forEach(game -> {
+                game.setRounds(roundDao.getRoundsForGame(game.getId()));
+            });
+
+            return games;
+        });
+    }
 
     private void finishGame(int gameId) {
         gameDao.finishGame(gameId);
