@@ -53,6 +53,8 @@ public class RoundDaoDb implements RoundDao{
             get.setId(rs.getInt("id"));
             get.setGuess(rs.getString("guess").toCharArray());
             get.setGameId(rs.getInt("game_id"));
+            get.setCorrect(rs.getByte("correct"));
+            get.setPartial(rs.getByte("partial"));
             return get;
         }
     }
