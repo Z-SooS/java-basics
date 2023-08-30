@@ -112,6 +112,10 @@ public class DigitService {
         });
     }
 
+    public CompletableFuture<List<Round>> getRoundsForGame(int gameId) {
+        return CompletableFuture.supplyAsync(()-> roundDao.getRoundsForGame(gameId));
+    }
+
     private static class GuessStatisticCollector {
         public byte correctGuess = 0;
         public byte partialGuess = 0;

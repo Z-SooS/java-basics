@@ -17,6 +17,8 @@ import java.util.concurrent.CompletableFuture;
 public class GameController {
     private DigitService service;
 
+        //"rounds/{gameId} – GET – Returns a list of rounds for the specified game sorted by time.
+
     @PostMapping("begin")
     public CompletableFuture<ResponseEntity<Integer>> begin() {
         service.createNewGame();
@@ -39,5 +41,10 @@ public class GameController {
             if (ex instanceof NullPointerException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             throw new RuntimeException(ex);
         });
+    }
+
+    @GetMapping("rounds/{gameId}")
+    public CompletableFuture<List<Round>> getRoundsForGame(@PathVariable int gameId) {
+        return service.getRoundsForGame(gameId);
     }
 }
