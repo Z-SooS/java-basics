@@ -7,10 +7,7 @@ import com.example.digits.service.DigitService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -33,5 +30,14 @@ public class GameController {
     @GetMapping("game")
     public CompletableFuture<List<Game>> games() {
         return service.getAllGames();
+    }
+
+    @GetMapping("game/{gameId}")
+    public CompletableFuture<ResponseEntity<Game>> getGame(@PathVariable int gameId) {
+        return service.getGame(gameId).thenApply(ResponseEntity::ok).exceptionally(ex->{
+            System.out.println("WHAT");
+            if (ex instanceof NullPointerException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            throw new RuntimeException(ex);
+        });
     }
 }

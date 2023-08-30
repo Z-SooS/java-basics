@@ -102,6 +102,16 @@ public class DigitService {
         return characters;
     }
 
+    public CompletableFuture<Game> getGame(int gameId) {
+        return CompletableFuture.supplyAsync(()->{
+            Game foundGame = gameDao.getGame(gameId);
+
+            foundGame.setRounds(roundDao.getRoundsForGame(gameId));
+
+            return foundGame;
+        });
+    }
+
     private static class GuessStatisticCollector {
         public byte correctGuess = 0;
         public byte partialGuess = 0;
